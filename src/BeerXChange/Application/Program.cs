@@ -1,6 +1,4 @@
-using Application.Storage;
 using Marten;
-using Microsoft.EntityFrameworkCore;
 using Weasel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
