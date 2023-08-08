@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  postgres-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: beerxchange-eventstore
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432  
