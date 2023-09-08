@@ -12,8 +12,7 @@ public class FridgeAggregate
     {
         Beers.Add(@event.BeerName);
     }
-
-
+    
     public void Apply(BeerTakenFromFridgeEvent @event)
     {
         Beers.Remove(@event.BeerName);

@@ -21,7 +21,7 @@ public class BeerController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("addbeertofridge")]
+    [HttpPost(nameof(AddBeerToFridge))]
     public async Task<IActionResult> AddBeerToFridge(
         Guid fridgeId, 
         int userId,
@@ -35,5 +35,21 @@ public class BeerController : ControllerBase
         await _session.SaveChangesAsync();
 
         return Ok("beer added!");
+    }
+    
+    [HttpPost(nameof(RemoveBeerFromFridge))]
+    public async Task<IActionResult> RemoveBeerFromFridge(
+        Guid fridgeId, 
+        int userId,
+        string beerName)
+    {
+        var result = _session.Events.Append(
+            fridgeId,
+            new BeerTakenFromFridgeEvent(userId, beerName)
+        );
+
+        await _session.SaveChangesAsync();
+
+        return Ok("beer removed!");
     }
 }
