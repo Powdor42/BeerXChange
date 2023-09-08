@@ -60,13 +60,6 @@ public class UserController : ControllerBase
         return Ok("user unregistered!");
     }
 
-    [HttpGet("{userid}")]
-    public async Task<IActionResult> Get(int userid)
-    {
-        var user = await _documentSession.LoadAsync<User>(userid);
-        return Ok(user);
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -76,7 +69,15 @@ public class UserController : ControllerBase
         {
             userList.Add(user);
         }
+        
         return Ok(userList);
+    }
+
+    [HttpGet("{userid}")]
+    public async Task<IActionResult> Get(int userid)
+    {
+        var user = await _documentSession.LoadAsync<User>(userid);
+        return Ok(user);
     }
 
     [HttpGet("{userid}/credits")]
