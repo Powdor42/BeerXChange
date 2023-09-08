@@ -27,11 +27,13 @@ public class BeerController : ControllerBase
         int userId,
         string beerName)
     {
-        var result = _session.Events.Append(
+        //add to fridge
+        _ = _session.Events.Append(
             fridgeId,
             new BeerAddedToFridgeEvent(userId, beerName)
         );
-
+        
+        
         await _session.SaveChangesAsync();
 
         return Ok("beer added!");
