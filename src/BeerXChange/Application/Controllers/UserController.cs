@@ -11,21 +11,39 @@ namespace Application.Controllers;
 [Route("[controller]")]
 public class UserController : ControllerBase
 {
-    private readonly IQuerySession _session;
+    private readonly IDocumentSession _documentSession;
+    private readonly IQuerySession _querySession;
     private readonly ILogger<BeerController> _logger;
     
     public UserController(
-        IQuerySession session,
+        IDocumentSession documentSession,
+        IQuerySession querySession,
         ILogger<BeerController> logger)
     {
-        _session = session;
+        _documentSession = documentSession;
+        _querySession = querySession;
         _logger = logger;
     }
 
+    [HttpPost(nameof(RegisterUser))]
+    public async Task<IActionResult> RegisterUser(int userId, string userName)
+    {
+        //add to fridge
+        _ = _documentSession.Events.Append(
+            Guid.NewGuid(),
+            new UserRegisteredEvent(userId, userName)
+        );
+        
+        
+        await _documentSession.SaveChangesAsync();
+
+        return Ok("beer added!");
+    }
+    
     [HttpGet("{userid}/credits")]
     public async Task<IActionResult> Get(int userid)
     {
-        var userCredits = _session.Query<UserCreditView>().First(i => i.Id == userid);
+        var userCredits = _querySession.Query<UserCreditView>().First(i => i.Id == userid);
         return Ok(userCredits);
     }
 }

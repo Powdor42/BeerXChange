@@ -19,7 +19,10 @@ public class UserCreditProjection  : MultiStreamProjection<UserCreditView, int>
     }
 
     public void Apply(UserRegisteredEvent @event, UserCreditView view)
-        => view.Id = @event.UserId;
+    {
+        view.Id = @event.UserId;
+        view.Name = @event.Name;
+    }
 
     public void Apply(BeerAddedToFridgeEvent @event, UserCreditView view)
         => view.Credits++;
@@ -32,5 +35,6 @@ public class UserCreditView
 {
     public int Id { get; set; }
 
+    public string Name { get; set; }
     public int Credits { get; set; }
 }
