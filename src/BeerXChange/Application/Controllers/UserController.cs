@@ -37,7 +37,7 @@ public class UserController : ControllerBase
         
         await _documentSession.SaveChangesAsync();
 
-        return Ok("beer added!");
+        return Ok("user registered!");
     }
     
     [HttpGet("{userid}/credits")]
