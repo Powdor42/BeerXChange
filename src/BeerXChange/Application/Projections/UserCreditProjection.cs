@@ -37,5 +37,5 @@ public class UserCreditView
     
     public int Credits { get; set; }
 
-    public List<string> Beers { get; set; } = new List<string>();
+    public List<string> Beers { get; } = new();
 }
