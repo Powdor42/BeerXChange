@@ -1,4 +1,7 @@
+using Application.Projections;
 using Marten;
+using Marten.Events.Daemon.Resiliency;
+using Marten.Events.Projections;
 using Weasel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,13 +18,15 @@ builder.Services.AddMarten(options =>
     // Establish the connection string to your Marten database
     options.Connection(builder.Configuration.GetConnectionString("BeerXChangeDb")!);
 
+    options.Projections.Add<UserCreditProjection>(ProjectionLifecycle.Async);
+    
     // If we're running in development mode, let Marten just take care
     // of all necessary schema building and patching behind the scenes
     if (builder.Environment.IsDevelopment())
     {
         options.AutoCreateSchemaObjects = AutoCreate.All;
     }
-});
+}).AddAsyncDaemon(DaemonMode.Solo);
 
 var app = builder.Build();
 
